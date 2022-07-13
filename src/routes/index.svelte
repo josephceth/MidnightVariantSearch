@@ -47,7 +47,7 @@ function FilterByName(){
 
 
 onMount(async () =>{
-    let response =  await fetch(`./yayayaSmall.json`, {
+    let response =  await fetch(`./yayaya.json`, {
       headers : { 
         'Content-Type': 'application/json',
         'Accept': 'application/json'
