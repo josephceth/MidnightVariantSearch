@@ -1,6 +1,8 @@
 <script>
 import {onMount} from 'svelte';
-import { fade } from 'svelte/transition';
+import { selectedVariant } from '../stores/stores.js';
+import VariantCard from '../components/variantCard.svelte';
+import Armor from '../components/armor.svelte';
 
 let variants = [];
 let nameSearch = ""
@@ -9,13 +11,14 @@ let page = 1;
 let sorter = -1;
 let allVariants = [];
 
+let modalVariant;
+selectedVariant.subscribe(value => {
+    modalVariant = value;
+});
+
 
 function GetVariants(page){
     return variants.slice((page-1)*pageSize, page*pageSize);
-}
-
-function GetVariantRarityAttribute(variant){
-    return variant.attributes.find(atr => atr.trait_type == "Rarity Class").value
 }
 
 function SortByRank(){
@@ -45,7 +48,6 @@ function FilterByName(){
     }
 }
 
-
 onMount(async () =>{
     let response =  await fetch(`./yayaya.json`, {
       headers : { 
@@ -56,6 +58,7 @@ onMount(async () =>{
     let json = await response.json();
     variants = json;
     allVariants = GetVariants(page);
+    console.table(allVariants);
 
     let element = document.getElementById("gridVariant");
     element.addEventListener('scroll', () => {
@@ -76,97 +79,54 @@ onMount(async () =>{
 });
 </script>
 
+<Armor/>
+<Armor hexColor="#77ff47"/>
 
 <div class="flex space-x-4">
     <input class="border" type="text" id="search" placeholder="Search" on:keyup="{FilterByName}" bind:value={nameSearch} />
     <button class="btn" on:click={SortByRank}>Sort By Rank</button>
     <button class="btn" on:click={SortByID}>Sort By ID</button>
 </div>
-<div id="gridVariant" class="col-span-4 mt-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="height:80vh; overflow-y:scroll">
-    {#each allVariants as variant}
-    <div transition:fade class="mx-4 {GetVariantRarityAttribute(variant).toLowerCase()}Shadow p-2 m-2">
-        <p class="font-medium text-center text-lg">{variant.name.toUpperCase()}</p>
-        <div style="position:relative;">
-            <p class="top-left rounded">#{variant.id}</p>
-            <p class="bottom-center rounded">Rank: {variant.rank}</p>
-            <img loading="lazy" alt="{variant.id}" src="{`https://midnightsociety.com/_next/image?url=%2Ffounders_pass_art%2F${variant.id}.jpg%3Fthumb%26res%3D146&w=1920&q=25`}"/>
-        </div>
-    </div>
+
+<div id="gridVariant" class="col-span-4 mt-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3" style="height:80vh; overflow-y:scroll">
+     {#each allVariants as variant}
+    <VariantCard variant={variant} />
     {/each}
+</div>
+{#if modalVariant != null}
+<input type="checkbox" id="my-modal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box w-11/12 max-w-5xl">
+    <a class="btn" href="https://opensea.io/assets/matic/0x89a4875c190565505b7891b700c2c6dc91816a47/{modalVariant.id}" target="_blank">View on OpenSea</a>
+    <div>{modalVariant.description}</div>
+    <div>{modalVariant.name}</div>
+    <div>{`Rank: ${modalVariant.rank} of 10,000`}</div>
+    {#each modalVariant.attributes as attribute}
+        <div>{attribute.trait_type}</div>
+        <div>{attribute.value}</div>
+        <div>{attribute.rarity_class}</div>
+    {/each}
+    <div class="modal-action">
+      <label for="my-modal" class="btn">Yay!</label>
     </div>
-    <style>
-    .top-left {
-        position: absolute;
-      top: 20px;
-      left: 20px;
-      background-color: black;
-      color: white;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    
-    .bottom-center {
-        position: absolute;
-      bottom: 20px;
-      margin-left: auto;
-        margin-right: auto;
-        left: 75px;
-        right: 75px;
-    text-align: center;
-      background-color: black;
-      color: white;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    
-    img {
-        height: 225px;
-        width: 225px;
-        min-height: 292px;
-        min-width: 292px;
-        opacity: 1;
-        transition: opacity 1200ms ease-out;
-        background-color:gray;
-      }
-      
-      ::-webkit-scrollbar{
-        height: 12px;
-        width: 12px;
-    }
-    ::-webkit-scrollbar-track{
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 1ex;
-    }
-    ::-webkit-scrollbar-thumb{
-        background: var(--theme-color);
-        border-radius: 1ex;
-    }
-    ::-webkit-scrollbar-corner{
-        background: none;
-    }
-    
-    .relicShadow {
-        max-height: 335px;
-        box-shadow: 0px 0px 8px 1px #ED3535;
-    }
-    
-    .legendaryShadow {
-        max-height: 335px;
-        box-shadow: 0px 0px 5px 1px rgb(249, 99, 0);
-    }
-    
-    .epicShadow {
-        max-height: 335px;
-        box-shadow: 0px 0px 5px 1px rgb(178, 53, 237);
-    }
-    
-    .rareShadow {
-        max-height: 335px;
-        box-shadow: 0px 0px 5px 1px rgb(55, 190, 248)
-    }
-    .commonShadow {
-        max-height: 335px;
-        box-shadow: 0px 0px 5px 1px rgb(119, 255, 71);
-    }
-    
-      </style>
+  </div>
+</div>
+{/if}
+
+<style>      
+
+::-webkit-scrollbar{
+    height: 12px;
+    width: 12px;
+}
+::-webkit-scrollbar-track{
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1ex;
+}
+::-webkit-scrollbar-thumb{
+    background: var(--theme-color);
+    border-radius: 1ex;
+}
+::-webkit-scrollbar-corner{
+    background: none;
+}</style>

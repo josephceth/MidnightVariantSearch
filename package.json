@@ -32,6 +32,7 @@
 		"ethers": "^5.6.9",
 		"msal": "^1.4.16",
 		"svelte-infinite-scroll": "^2.0.1",
+		"svelte-modals": "^1.1.0",
 		"web3": "^1.7.4"
 	}
 }
