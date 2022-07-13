@@ -69,7 +69,6 @@ onMount(async () =>{
         passive: true
     });
 });
-
 </script>
 
 
@@ -78,7 +77,7 @@ onMount(async () =>{
     <button class="btn" on:click={SortByRank}>Sort By Rank</button>
     <button class="btn" on:click={SortByID}>Sort By ID</button>
 </div>
-<div id="gridVariant" class="col-span-4 mt-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="height:70vh; overflow-y:scroll">
+<div id="gridVariant" class="col-span-4 mt-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style="height:80vh; overflow-y:scroll">
     {#each allVariants as variant}
     <div transition:fade class="mx-4 {GetVariantRarityAttribute(variant).toLowerCase()}Shadow p-2 m-2">
         <p class="font-medium text-center text-lg">{variant.name.toUpperCase()}</p>
