@@ -52,10 +52,10 @@
     }
     
     img {
-        height: 225px;
-        width: 225px;
-        min-height: 292px;
-        min-width: 292px;
+        height: 250px;
+        width: 250px;
+        min-height: 225px;
+        min-width: 225px;
         opacity: 1;
         transition: opacity 1200ms ease-out;
         background-color:gray;
