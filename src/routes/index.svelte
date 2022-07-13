@@ -47,7 +47,7 @@ function FilterByName(){
 
 
 onMount(async () =>{
-    let response = await fetch("./yayaya.json.gz");
+    let response = await fetch("./yayayaSmall.json");
     let json = await response.json();
     variants = json;
     allVariants = GetVariants(page);
