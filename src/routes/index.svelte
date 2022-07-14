@@ -86,11 +86,6 @@ onMount(async () =>{
 });
 </script>
 
-
-<IconBorder hexColor="#77ff47"><MoonIcon hexColor="#77ff47"/></IconBorder>
-<RarityIcon hexColor="#77ff47" />
-
-
 <div class="flex space-x-4">
     <input class="border" type="text" id="search" placeholder="Search" on:keyup="{FilterByName}" bind:value={nameSearch} />
     <button class="btn" on:click={SortByRank}>Sort By Rank</button>
@@ -102,78 +97,87 @@ onMount(async () =>{
     <VariantCard variant={variant} />
     {/each}
 </div>
-{#if modalVariant != null}
+
 <input type="checkbox" id="my-modal" class="modal-toggle" />
 <div class="modal text-white">
   <div class="modal-box w-11/12 max-w-5xl">
     <a class="btn" href="https://opensea.io/assets/matic/0x89a4875c190565505b7891b700c2c6dc91816a47/{modalVariant.id}" target="_blank">View on OpenSea</a>
 
-        
+        <label for="my-modal" class="btn">Close</label>
+    <div class="card compact side bg-base-100">
+        <div class="flex-row items-center space-x-4 card-body">
+            <div>
+                <div class="avatar">
+                    <div class="w-100 h-100">
+                        <img loading="lazy" alt="{modalVariant.id}" src="{`https://midnightsociety.com/_next/image?url=%2Ffounders_pass_art%2F${modalVariant.id}.jpg%3Fthumb%26res%3D146&w=1920&q=100`}"/>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h2 class="card-title uppercase {GVA(modalVariant, "Squad Role").rarity_class}">Squad: {GVA(modalVariant, "Squad Role").value}</h2> 
+                <p class="text-white italic text-xl">{modalVariant.name}</p>
+            </div>
+        </div>
+    </div>
 
-    
     <div class="card compact side bg-base-100">
         <div class="flex-row items-center space-x-4 card-body">
             <div>
                 <div class="avatar">
                     <div class="w-14 h-14">
-                        <RarityIcon hexColor="#77ff47"/>
+                        {#key modalVariant}
+                        <RarityIcon rarity={GVA(modalVariant, "Rarity Class").rarity_class}/>
+                        {/key}
                     </div>
                 </div>
             </div>
             <div>
-                <h2 class="card-title uppercase {GVA(modalVariant, "Squad Role").rarity_class.toLowerCase()}">Squad: {GVA(modalVariant, "Squad Role").value}</h2> 
-                <p class="text-white text-xl">{modalVariant.name}</p>
+                <h2 class="card-title uppercase {GVA(modalVariant, "Rarity Class").rarity_class}">Ranking</h2> 
+                <p class="text-white text-lg">{modalVariant.rank}</p>
             </div>
         </div>
     </div>
-    
-    <div>{`Rank: ${modalVariant.rank} of 10,000`}</div>
     <div class=" grid grid-cols-1 md:grid-cols-2">
-    {#each modalVariant.attributes as attribute}
+    {#each modalVariant.attributes as attribute (attribute)}
         <div class="card compact side bg-base-100">
-            <div class="flex-row items-center space-x-4 card-body">
+            <div class="flex-row items-center space-x-0 card-body">
                 <div>
                     <div class="avatar">
                         <div class="w-14 h-14">
-                            <RarityIcon hexColor="#77ff47"/>
+                            <RarityIcon rarity={attribute.rarity_class}/>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <h2 class="card-title uppercase {attribute.rarity_class.toLowerCase()}">{attribute.trait_type}</h2> 
-                    <p class="text-white text-lg">{attribute.value}</p>
+                    <h2 class="card-title uppercase {attribute.rarity_class}">{attribute.trait_type}</h2> 
+                    <p class="text-white text-lg">{attribute.value} <span class="opacity-50 text-sm">({parseFloat(attribute.rarity).toFixed(2)}% have this trait)</span></p>
                 </div>
             </div>
         </div>
-        <!-- <div>{attribute.trait_type}</div>
-        <div>{attribute.value}</div>
-        <div>{attribute.rarity_class}</div> -->
     {/each}
 </div>
-    <div class="modal-action">
-      <label for="my-modal" class="btn">Yay!</label>
-    </div>
+    
   </div>
 </div>
-{/if}
+
 
 <style>      
-    .relic {
+    .Relic {
         color: #ED3535;
     }
     
-    .legendary {
+    .Legendary {
         color: #f96300;
     }
     
-    .epic {
+    .Epic {
         color: #b235ed;
     }
     
-    .rare {
+    .Rare {
         color: #37bef8
     }
-    .common {
+    .Common {
         color: #77ff47;
     }
 
@@ -191,4 +195,10 @@ onMount(async () =>{
 }
 ::-webkit-scrollbar-corner{
     background: none;
-}</style>
+}
+
+.text-xl {
+    font-size: 2.5rem;
+}
+
+</style>

@@ -22,7 +22,7 @@
 		display: flex;
 		flex-direction: column;
 		padding: 1rem;
-		width: 80vw;
+		width: 100vw;
 		margin: 0 auto;
 		box-sizing: border-box;
 		font-family: 'Chakra Petch', sans-serif !important;
