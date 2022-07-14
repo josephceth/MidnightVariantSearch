@@ -4,7 +4,7 @@
     export let variant;
 
     function GetVariantRarityAttribute(variant){
-    return variant.attributes.find(atr => atr.trait_type == "Rarity Class").value
+        return variant.attributes.find(atr => atr.trait_type == "Rarity Class").value
     }
 
     function SetSelectedVariant(){
@@ -59,6 +59,7 @@
         opacity: 1;
         transition: opacity 1200ms ease-out;
         background-color:gray;
+        border: 1px solid black;
       }
     
     

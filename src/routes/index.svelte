@@ -2,7 +2,9 @@
 import {onMount} from 'svelte';
 import { selectedVariant } from '../stores/stores.js';
 import VariantCard from '../components/variantCard.svelte';
-import Armor from '../components/armor.svelte';
+import RarityIcon from '../components/RarityIcon.svelte';
+import IconBorder from '../components/IconBorder.svelte';
+import MoonIcon from '../components/MoonIcon.svelte';
 
 let variants = [];
 let nameSearch = ""
@@ -19,6 +21,10 @@ selectedVariant.subscribe(value => {
 
 function GetVariants(page){
     return variants.slice((page-1)*pageSize, page*pageSize);
+}
+
+function GVA(variant, attribute){
+        return variant.attributes.find(atr => atr.trait_type == attribute);
 }
 
 function SortByRank(){
@@ -45,6 +51,7 @@ function FilterByName(){
             ||
             variant.id.toString().includes(nameSearch)
         ).splice(0,50);
+        console.log(allVariants);
     }
 }
 
@@ -79,8 +86,10 @@ onMount(async () =>{
 });
 </script>
 
-<Armor/>
-<Armor hexColor="#77ff47"/>
+
+<IconBorder hexColor="#77ff47"><MoonIcon hexColor="#77ff47"/></IconBorder>
+<RarityIcon hexColor="#77ff47" />
+
 
 <div class="flex space-x-4">
     <input class="border" type="text" id="search" placeholder="Search" on:keyup="{FilterByName}" bind:value={nameSearch} />
@@ -95,17 +104,52 @@ onMount(async () =>{
 </div>
 {#if modalVariant != null}
 <input type="checkbox" id="my-modal" class="modal-toggle" />
-<div class="modal">
+<div class="modal text-white">
   <div class="modal-box w-11/12 max-w-5xl">
     <a class="btn" href="https://opensea.io/assets/matic/0x89a4875c190565505b7891b700c2c6dc91816a47/{modalVariant.id}" target="_blank">View on OpenSea</a>
-    <div>{modalVariant.description}</div>
-    <div>{modalVariant.name}</div>
+
+        
+
+    
+    <div class="card compact side bg-base-100">
+        <div class="flex-row items-center space-x-4 card-body">
+            <div>
+                <div class="avatar">
+                    <div class="w-14 h-14">
+                        <RarityIcon hexColor="#77ff47"/>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h2 class="card-title uppercase {GVA(modalVariant, "Squad Role").rarity_class.toLowerCase()}">Squad: {GVA(modalVariant, "Squad Role").value}</h2> 
+                <p class="text-white text-xl">{modalVariant.name}</p>
+            </div>
+        </div>
+    </div>
+    
     <div>{`Rank: ${modalVariant.rank} of 10,000`}</div>
+    <div class=" grid grid-cols-1 md:grid-cols-2">
     {#each modalVariant.attributes as attribute}
-        <div>{attribute.trait_type}</div>
+        <div class="card compact side bg-base-100">
+            <div class="flex-row items-center space-x-4 card-body">
+                <div>
+                    <div class="avatar">
+                        <div class="w-14 h-14">
+                            <RarityIcon hexColor="#77ff47"/>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="card-title uppercase {attribute.rarity_class.toLowerCase()}">{attribute.trait_type}</h2> 
+                    <p class="text-white text-lg">{attribute.value}</p>
+                </div>
+            </div>
+        </div>
+        <!-- <div>{attribute.trait_type}</div>
         <div>{attribute.value}</div>
-        <div>{attribute.rarity_class}</div>
+        <div>{attribute.rarity_class}</div> -->
     {/each}
+</div>
     <div class="modal-action">
       <label for="my-modal" class="btn">Yay!</label>
     </div>
@@ -114,6 +158,24 @@ onMount(async () =>{
 {/if}
 
 <style>      
+    .relic {
+        color: #ED3535;
+    }
+    
+    .legendary {
+        color: #f96300;
+    }
+    
+    .epic {
+        color: #b235ed;
+    }
+    
+    .rare {
+        color: #37bef8
+    }
+    .common {
+        color: #77ff47;
+    }
 
 ::-webkit-scrollbar{
     height: 12px;
