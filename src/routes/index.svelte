@@ -3,8 +3,7 @@ import {onMount} from 'svelte';
 import { selectedVariant } from '../stores/stores.js';
 import VariantCard from '../components/variantCard.svelte';
 import RarityIcon from '../components/RarityIcon.svelte';
-import IconBorder from '../components/IconBorder.svelte';
-import MoonIcon from '../components/MoonIcon.svelte';
+import Accordion from '../components/Accordion.svelte';
 
 let variants = [];
 let nameSearch = ""
@@ -12,6 +11,7 @@ let pageSize = 20;
 let page = 1;
 let sorter = -1;
 let allVariants = [];
+let attributeList = [];
 
 let modalVariant;
 selectedVariant.subscribe(value => {
@@ -25,6 +25,14 @@ function GetVariants(page){
 
 function GVA(variant, attribute){
         return variant.attributes.find(atr => atr.trait_type == attribute);
+}
+
+function GetAttributeList(variant){
+    let attributes = [];
+    variant.attributes.forEach(atr => {
+        attributes.push(atr.trait_type);
+    });
+    return attributes;
 }
 
 function SortByRank(){
@@ -66,7 +74,7 @@ onMount(async () =>{
     variants = json;
     allVariants = GetVariants(page);
     console.table(allVariants);
-
+    attributeList = GetAttributeList(variants[0]);
     let element = document.getElementById("gridVariant");
     element.addEventListener('scroll', () => {
         const {
@@ -85,7 +93,12 @@ onMount(async () =>{
     });
 });
 </script>
-
+<div class="drawer drawer-mobile">
+    <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content flex flex-col items-center justify-center">
+      <!-- Page content here -->
+      <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">Open drawer</label>
+    
 <div class="flex space-x-4">
     <input class="border" type="text" id="search" placeholder="Search" on:keyup="{FilterByName}" bind:value={nameSearch} />
     <button class="btn" on:click={SortByRank}>Sort By Rank</button>
@@ -109,56 +122,74 @@ onMount(async () =>{
             <div>
                 <div class="avatar">
                     <div class="w-100 h-100">
-                        <img loading="lazy" alt="{modalVariant.id}" src="{`https://midnightsociety.com/_next/image?url=%2Ffounders_pass_art%2F${modalVariant.id}.jpg%3Fthumb%26res%3D146&w=1920&q=100`}"/>
+                        <img alt="{modalVariant.id}" src="{`https://midnightsociety.com/_next/image?url=%2Ffounders_pass_art%2F${modalVariant.id}.jpg%3Fthumb&w=1920&q=75`}"/>
                     </div>
                 </div>
             </div>
             <div>
-                <h2 class="card-title uppercase {GVA(modalVariant, "Squad Role").rarity_class}">Squad: {GVA(modalVariant, "Squad Role").value}</h2> 
-                <p class="text-white italic text-xl">{modalVariant.name}</p>
+                <h2 class="card-title uppercase {GVA(modalVariant, "Squad Role").rarity_class}">Squad Role: {GVA(modalVariant, "Squad Role").value}</h2> 
+                <p class="text-white italic text-lg">{modalVariant.name}</p>
             </div>
         </div>
     </div>
 
-    <div class="card compact side bg-base-100">
-        <div class="flex-row items-center space-x-4 card-body">
-            <div>
-                <div class="avatar">
-                    <div class="w-14 h-14">
-                        {#key modalVariant}
-                        <RarityIcon rarity={GVA(modalVariant, "Rarity Class").rarity_class}/>
-                        {/key}
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h2 class="card-title uppercase {GVA(modalVariant, "Rarity Class").rarity_class}">Ranking</h2> 
-                <p class="text-white text-lg">{modalVariant.rank}</p>
-            </div>
-        </div>
-    </div>
-    <div class=" grid grid-cols-1 md:grid-cols-2">
-    {#each modalVariant.attributes as attribute (attribute)}
+    
+    <div class=" grid grid-cols-1 md:grid-cols-3">
         <div class="card compact side bg-base-100">
             <div class="flex-row items-center space-x-0 card-body">
-                <div>
+                <!-- <div>
                     <div class="avatar">
                         <div class="w-14 h-14">
                             <RarityIcon rarity={attribute.rarity_class}/>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div>
-                    <h2 class="card-title uppercase {attribute.rarity_class}">{attribute.trait_type}</h2> 
+                    <p class="txt-lg uppercase {GVA(modalVariant, "Rarity Class").rarity_class}">Ranking</p> 
+                    <p class="text-white text-lg">{modalVariant.rank} <span class="opacity-50 text-sm">({parseFloat(modalVariant.rank/100.00).toFixed(2)}% have this trait)</span></p>
+                </div>
+            </div>
+        </div>
+    {#each modalVariant.attributes as attribute (attribute)}
+        <div class="card compact side bg-base-100">
+            <div class="flex-row items-center space-x-0 card-body">
+                <!-- <div>
+                    <div class="avatar">
+                        <div class="w-14 h-14">
+                            <RarityIcon rarity={attribute.rarity_class}/>
+                        </div>
+                    </div>
+                </div> -->
+                <div>
+                    <p class="uppercase txt-md {attribute.rarity_class}">{attribute.trait_type}</p> 
                     <p class="text-white text-lg">{attribute.value} <span class="opacity-50 text-sm">({parseFloat(attribute.rarity).toFixed(2)}% have this trait)</span></p>
                 </div>
             </div>
         </div>
     {/each}
-</div>
     
+</div>
+<label for="my-modal" class="btn w-full">Close</label>
   </div>
 </div>
+    </div> 
+    <div class="drawer-side">
+      <label for="my-drawer-2" class="drawer-overlay"></label> 
+      <ul class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+        {#each attributeList as attribute }
+        <Accordion>
+            <span slot="head">{attribute}</span>
+            <div slot="details">
+                <p>
+                    These are the details.
+                </p>
+            </div>
+        </Accordion>
+        {/each}<!-- Sidebar content here -->
+      </ul>
+    </div>
+</div>
+
 
 
 <style>      
@@ -199,6 +230,13 @@ onMount(async () =>{
 
 .text-xl {
     font-size: 2.5rem;
+}
+
+img{
+    height: 300px;
+    width: 300px;
+    min-height: 250px;
+    min-width: 250px;
 }
 
 </style>
