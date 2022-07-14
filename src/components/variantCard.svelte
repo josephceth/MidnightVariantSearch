@@ -69,25 +69,65 @@
     .relicShadow {
         max-height: 335px;
         box-shadow: 0px 0px 8px 1px #ED3535;
+        transition: 0.3s;
+    }
+
+    .relicShadow:hover {
+        max-height: 335px;
+        box-shadow: 0px 0px 8px 5px #ED3535;
+        transition: 0.3s;
     }
     
     .legendaryShadow {
         max-height: 335px;
         box-shadow: 0px 0px 5px 1px #f96300;
+        transition: 0.3s;
+    }
+
+    .legendaryShadow:hover {
+        max-height: 335px;
+        box-shadow: 0px 0px 5px 5px #f96300;
+        transition: 0.3s;
     }
     
     .epicShadow {
         max-height: 335px;
         box-shadow: 0px 0px 5px 1px #b235ed;
+        transition: 0.3s;
+    }
+    .epicShadow:hover {
+        max-height: 335px;
+        box-shadow: 0px 0px 5px 5px #b235ed;
+        transition: 0.3s;
     }
     
     .rareShadow {
         max-height: 335px;
-        box-shadow: 0px 0px 5px 1px #37bef8
+        box-shadow: 0px 0px 5px 1px #37bef8;
+        transition: 0.3s;
     }
+    .rareShadow:hover {
+        max-height: 335px;
+        box-shadow: 0px 0px 5px 5px #37bef8;
+        transition: 0.3s;
+    }
+
     .commonShadow {
         max-height: 335px;
         box-shadow: 0px 0px 5px 1px #77ff47;
+        transition: 0.3s;
     }
+    .commonShadow:hover {
+        max-height: 335px;
+        box-shadow: 0px 0px 5px 5px #77ff47;
+        transition: 0.3s;
+    }
+
+    
+    
+    
+    
+    
+  
     
       </style>

@@ -93,12 +93,12 @@ onMount(async () =>{
     });
 });
 </script>
-<div class="drawer drawer-mobile">
+<!-- <div class="drawer drawer-mobile">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content flex flex-col items-center justify-center">
-      <!-- Page content here -->
+       Page content here 
       <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">Open drawer</label>
-    
+     -->
 <div class="flex space-x-4">
     <input class="border" type="text" id="search" placeholder="Search" on:keyup="{FilterByName}" bind:value={nameSearch} />
     <button class="btn" on:click={SortByRank}>Sort By Rank</button>
@@ -172,7 +172,7 @@ onMount(async () =>{
 <label for="my-modal" class="btn w-full">Close</label>
   </div>
 </div>
-    </div> 
+    <!-- </div> 
     <div class="drawer-side">
       <label for="my-drawer-2" class="drawer-overlay"></label> 
       <ul class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
@@ -180,15 +180,15 @@ onMount(async () =>{
         <Accordion>
             <span slot="head">{attribute}</span>
             <div slot="details">
-                <p>
-                    These are the details.
-                </p>
+                
+                <input id="test" type="checkbox" checked="checked" class="checkbox checkbox-sm text-white"/> 
+                <label for="test">Filters Comming Soon</label>
             </div>
         </Accordion>
-        {/each}<!-- Sidebar content here -->
+        {/each}Sidebar content here 
       </ul>
-    </div>
-</div>
+    </div> 
+</div>-->
 
 
 
