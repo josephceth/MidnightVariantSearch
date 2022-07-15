@@ -2,6 +2,7 @@
 import {onMount} from 'svelte';
 import { selectedVariant } from '../stores/stores.js';
 import VariantCard from '../components/variantCard.svelte';
+import LogRocket from 'logrocket';
 import RarityIcon from '../components/RarityIcon.svelte';
 import Accordion from '../components/Accordion.svelte';
 
@@ -64,6 +65,7 @@ function FilterByName(){
 }
 
 onMount(async () =>{
+    LogRocket.init('5bp4xt/variantsearch');
     let response =  await fetch(`./yayaya.json`, {
       headers : { 
         'Content-Type': 'application/json',
