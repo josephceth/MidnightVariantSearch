@@ -8,8 +8,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap" rel="stylesheet">
 		%sveltekit.head%
+
+		<style>
+			::-webkit-scrollbar{
+    height: 12px;
+    width: 12px;
+}
+::-webkit-scrollbar-track{
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1ex;
+}
+::-webkit-scrollbar-thumb{
+    background: var(--theme-color);
+    border-radius: 1ex;
+}
+::-webkit-scrollbar-corner{
+    background: none;
+}
+		</style>
 	</head>
 	<body>
 		<div>%sveltekit.body%</div>
 	</body>
+	
 </html>

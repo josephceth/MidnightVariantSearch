@@ -41,6 +41,7 @@ function SortByRank(){
     sorter = -sorter;
     variants.sort((a,b) => a.rank < b.rank ? sorter : b.rank < a.rank ? -sorter : 0);
     allVariants = [...GetVariants(page)];
+    window.scrollTo(0, 0);
 }
 
 function SortByID(){
@@ -48,6 +49,7 @@ function SortByID(){
     sorter = -sorter;
     variants.sort((a,b) => a.id < b.id ? sorter : b.id < a.id ? -sorter : 0);
     allVariants = [...GetVariants(page)];
+    window.scrollTo(0, 0);
 }
 
 function FilterByName(){
@@ -62,6 +64,7 @@ function FilterByName(){
         ).splice(0,50);
         console.log(allVariants);
     }
+    window.scrollTo(0, 0);
 }
 
 onMount(async () =>{
@@ -88,7 +91,6 @@ onMount(async () =>{
             page++;
             allVariants = [...allVariants, ...GetVariants(page)];
         }
-        console.log(scrollTop, scrollHeight, clientHeight);
     }, 
     {
         passive: true
@@ -101,7 +103,7 @@ onMount(async () =>{
        Page content here 
       <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">Open drawer</label>
      -->
-<div class="flex space-x-4">
+<div class="flex w-full sticky top-0 z-50 bg-base-100 justify-center p-5 space-x-4">
     <input class="border" type="text" id="search" placeholder="Search" on:keyup="{FilterByName}" bind:value={nameSearch} />
     <button class="btn" on:click={SortByRank}>Sort By Rank</button>
     <button class="btn" on:click={SortByID}>Sort By ID</button>
@@ -214,21 +216,6 @@ onMount(async () =>{
         color: #77ff47;
     }
 
-::-webkit-scrollbar{
-    height: 12px;
-    width: 12px;
-}
-::-webkit-scrollbar-track{
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 1ex;
-}
-::-webkit-scrollbar-thumb{
-    background: var(--theme-color);
-    border-radius: 1ex;
-}
-::-webkit-scrollbar-corner{
-    background: none;
-}
 
 .text-xl {
     font-size: 2.5rem;
