@@ -119,16 +119,16 @@ onMount(async () =>{
     <a class="btn" href="https://opensea.io/assets/matic/0x89a4875c190565505b7891b700c2c6dc91816a47/{modalVariant.id}" target="_blank">View on OpenSea</a>
 
         <label for="my-modal" class="btn">Close</label>
-    <div class="card compact side bg-base-100">
-        <div class="flex-row items-center space-x-4 card-body">
-            <div>
+    <div class="card compact side bg-base-100 mt-3">
+        <div class="grid grid-cols-1 md:grid-cols-3">
+            <div class="col-span-1">
                 <div class="avatar">
                     <div class="w-100 h-100">
                         <img alt="{modalVariant.id}" src="{`https://midnightsociety.com/_next/image?url=%2Ffounders_pass_art%2F${modalVariant.id}.jpg%3Fthumb&w=1920&q=75`}"/>
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="col-span-2">
                 <h2 class="card-title uppercase {GVA(modalVariant, "Squad Role").rarity_class}">Squad Role: {GVA(modalVariant, "Squad Role").value}</h2> 
                 <p class="text-white italic text-lg">{modalVariant.name}</p>
             </div>
