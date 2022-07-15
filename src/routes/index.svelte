@@ -77,18 +77,18 @@ onMount(async () =>{
     allVariants = GetVariants(page);
     console.table(allVariants);
     attributeList = GetAttributeList(variants[0]);
-    let element = document.getElementById("gridVariant");
-    element.addEventListener('scroll', () => {
+    window.addEventListener('scroll', () => {
         const {
             scrollTop,
             scrollHeight,
             clientHeight
-        } = element;
+        } = document.documentElement;;
 
         if (scrollTop + clientHeight >= scrollHeight - 200)  {
             page++;
             allVariants = [...allVariants, ...GetVariants(page)];
         }
+        console.log(scrollTop, scrollHeight, clientHeight);
     }, 
     {
         passive: true
@@ -107,7 +107,7 @@ onMount(async () =>{
     <button class="btn" on:click={SortByID}>Sort By ID</button>
 </div>
 
-<div id="gridVariant" class="col-span-4 mt-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3" style="height:80vh; overflow-y:scroll">
+<div id="gridVariant" class="col-span-4 mt-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3" >
      {#each allVariants as variant}
     <VariantCard variant={variant} />
     {/each}
